@@ -23,6 +23,8 @@ WORKDIR /myapp
 COPY Gemfile /myapp/Gemfile
 COPY Gemfile.lock /myapp/Gemfile.lock
 
+RUN bundle lock --add-platform x86_64-linux
+RUN bundle config set frozen false
 RUN bundle install
 
 COPY . /myapp
