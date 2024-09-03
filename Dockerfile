@@ -1,7 +1,7 @@
 FROM node:14.17.6
 # FROM ruby:3.0.2
 # FROM ruby:3.1.0
-FROM ruby:3.3.1
+FROM ruby:3.3
 COPY --from=node /opt/yarn-* /opt/yarn
 COPY --from=node /usr/local/bin/node /usr/local/bin/
 COPY --from=node /usr/local/lib/node_modules/ /usr/local/lib/node_modules/
@@ -23,9 +23,9 @@ WORKDIR /myapp
 COPY Gemfile /myapp/Gemfile
 COPY Gemfile.lock /myapp/Gemfile.lock
 
-RUN bundle lock --add-platform x86_64-linux
-RUN bundle config set frozen false
-RUN bundle install
+RUN gem update --system
+RUN gem install bundler
+RUN bundle lock --add-platform x86_64-linux && bundle config set frozen false && bundle install
 
 COPY . /myapp
 
