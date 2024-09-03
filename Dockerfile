@@ -29,9 +29,9 @@ WORKDIR /myapp
 COPY Gemfile /myapp/Gemfile
 COPY Gemfile.lock /myapp/Gemfile.lock
 
-RUN bundle lock --add-platform x86_64-linux
-RUN bundle config set frozen false
-RUN bundle install
+RUN gem update --system
+RUN gem install bundler
+RUN bundle lock --add-platform x86_64-linux && bundle config set frozen false && bundle install
 
 COPY . /myapp
 
@@ -43,3 +43,4 @@ EXPOSE 3000
 
 # Start the main process.
 CMD ["rails", "server", "-b", "0.0.0.0"]
+
