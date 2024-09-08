@@ -1,18 +1,34 @@
+# version: '3'
+
+volumes:
+  db-data:
+
 services:
-  db:
-    image: postgres:12
-    volumes:
-      - ./tmp/db:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_PASSWORD=password
   web:
     build: .
     image: mercari-clone:latest
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
-    volumes:
-      - .:/myapp
     ports:
-      - "3000:3000"
+      - '3000:3000'
+    volumes:
+      - '.:/myapp'
+      # - './myapp:/myapp'
+    environment:
+      - 'DATABASE_PASSWORD=postgres'
+    tty: true
+    stdin_open: true
+#以下追加
     depends_on:
       - db
+    links:
+      - db
+    command: /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+
+  db:
+    # image: postgres:12
+    image: postgres:16
+    volumes: 
+      - './tmp/db:/var/lib/postgresql/data'
+    environment:
+      - 'POSTGRES_USER=postgres'
+      - 'POSTGRES_PASSWORD=postgres'
 

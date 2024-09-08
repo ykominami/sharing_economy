@@ -1,0 +1,16 @@
+FROM ruby:3.3.0
+RUN apt-get update -qq && apt-get install -y \
+    build-essential \
+    libpq-dev \
+    nodejs npm\
+    postgresql-client 
+#    yarn
+RUN npm install -g yarn 
+
+# RUN gem update --system
+# RUN gem install bundler
+
+# WORKDIR /myapp
+# COPY Gemfile Gemfile.lock /myapp/
+# RUN bundle install
+
