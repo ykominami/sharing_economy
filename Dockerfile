@@ -12,26 +12,26 @@ RUN ln -fs /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
  && ln -fs /opt/yarn/bin/yarn /usr/local/bin/yarn \
  && ln -fs /opt/yarn/bin/yarnpkg /usr/local/bin/yarnpkg 
 
-RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
-  apt-get update -qq && \
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+  && apt-get update -qq && \
   apt-get install -y build-essential \
   libpq-dev \
   postgresql-client \
   && apt-get install -y nodejs \
-  && npm install -g yarn
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir /myapp
+RUN gem update --system
 RUN gem install bundler
+
+RUN mkdir /myapp
 WORKDIR /myapp
 
 COPY Gemfile /myapp/Gemfile
 COPY Gemfile.lock /myapp/Gemfile.lock
 
-RUN gem update --system
-RUN gem install bundler
-RUN bundle lock --add-platform x86_64-linux && bundle config set frozen false && bundle install
+# RUN bundle lock --add-platform x86_64-linux && bundle config set frozen false && bundle install
+RUN bundle install
 
 COPY . /myapp
 
