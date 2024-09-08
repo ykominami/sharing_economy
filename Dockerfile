@@ -11,6 +11,8 @@ RUN npm install -g yarn
 
 RUN gem update --system
 RUN gem install bundler
+# RUN bundle lock --add-platform x86_64-linux && bundle config set frozen false && bundle install
+RUN bundle install
 
 WORKDIR /myapp
 COPY Gemfile Gemfile.lock /myapp/
